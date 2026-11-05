@@ -1,0 +1,12 @@
+{
+    "client_name": "John Doe",
+    "current_age": 60,
+    "savings": 500000.0,
+    "monthly_ss": 3500.0,
+    "monthly_withdrawal": 1500.0,
+    "monthly_expenses": 2500.0,
+    "inflation_rate": 0.03,
+    "investment_return": 0.05,
+    "years_projected": 20,
+    "health_shock_base": 50000.0
+}
