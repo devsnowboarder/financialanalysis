@@ -464,4 +464,9 @@ def calculate_retirement_runway():
 
 if __name__ == "__main__":
     html_output = calculate_retirement_runway()
-    print("Script processed successfully. HTML string updated in memory.")
+    output_filename = "retirement_projection.html"
+
+    with open(output_filename, "w", encoding="utf-8") as file:
+        file.write(html_output)
+
+    print(f"Script processed successfully. Saved report to '{output_filename}'.")
