@@ -1,14 +1,8 @@
 [GOOGL_scene_1]
-Over the past year, GOOGL moved from $284.01  to $282.57
- Watch how the 50-day moving average tracked structural
- momentum shifts across the timeframe.
+Over the past year, GOOGL moved from 284.01 dollars to 282.57 dollars. Watch how the 50-day moving average tracked structural momentum shifts across the timeframe.
 
 [GOOGL_scene_2]
-High returns rarely come without volatility.
-Looking at the underwater drawdown profile, GOOGL experienced
-a maximum  pullback of 30.6 percent from its peak before stabilizing.
+High returns rarely come without volatility. Looking at the underwater drawdown profile, GOOGL experienced a maximum pullback of 30.6 percent from its peak before stabilizing.
 
 [GOOGL_scene_3]
-When normalized on a percentage basis against SPY,
-the performance gap stands out. GOOGL delivered a cumulative
-return of -0.5 percent, compared to 10.5 percent for the benchmark.
+When normalized on a percentage basis against SPY, the performance gap stands out. GOOGL delivered a cumulative return of -0.5 percent, compared to 10.5 percent for the benchmark.
