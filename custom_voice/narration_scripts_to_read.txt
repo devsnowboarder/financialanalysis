@@ -4,6 +4,9 @@ Over the past year, AAPL moved from 268.78 dollars to 344.17 dollars. Watch how 
 [AAPL_scene_2]
 High returns rarely come without volatility. Looking at the underwater drawdown profile, AAPL experienced a maximum pullback of 13.8 percent from its peak before stabilizing.
 
+
+
+
 [AAPL_scene_3]
 When normalized on a percentage basis against SPY, the performance gap stands out. AAPL delivered a cumulative return of 28.1 percent, compared to 10.5 percent for the benchmark.
 
