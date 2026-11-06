@@ -3,6 +3,7 @@ import os
 import shutil
 import signal
 import subprocess
+import sys
 from pathlib import Path
 from typing import List, Optional
 import edge_tts
@@ -12,10 +13,6 @@ import pandas as pd
 import yfinance as yf
 from pydantic import BaseModel
 from moviepy import VideoClip, AudioFileClip, VideoFileClip, concatenate_videoclips
-import  shutil
-import sys
-
-
 
 # Map yfinance period codes to natural spoken narration phrases
 PERIOD_LABELS = {
@@ -31,10 +28,34 @@ PERIOD_LABELS = {
 
 # Common ticker typos mapped to their official Yahoo Finance symbols
 TICKER_TYPO_MAP = {
-    "APPL": "AAPL"
+    "APPL": "AAPL",
+    "GOOG": "GOOGL",
+    "BRK.B": "BRK-B",
+    "BRKB": "BRK-B",
+    "BRK.A": "BRK-A",
+    "FB": "META",
 }
 
 DEFAULT_BATCH = ["AAPL", "MSFT", "TSLA", "GOOGL", "AMZN", "META", "NFLX", "NVDA", "AMD"]
+
+
+# 0. Startup System Dependency Check
+def verify_ffmpeg():
+    """Checks if ffmpeg and ffprobe are installed and available in the system PATH."""
+    required_tools = ["ffmpeg", "ffprobe"]
+    missing = [tool for tool in required_tools if not shutil.which(tool)]
+
+    if missing:
+        print("\n" + "=" * 60)
+        print(f"[!] FATAL ERROR: Missing required tool(s): {', '.join(missing)}")
+        print("=" * 60)
+        print("FFmpeg is required by MoviePy to render videos and by the live mic recorder.")
+        print("To install it on macOS, open your terminal and run:")
+        print("    brew install ffmpeg")
+        print("\nAfter installation completes, restart PyCharm and re-run your script.")
+        print("=" * 60 + "\n")
+        sys.exit(1)
+
 
 # 1. Define Structured Schemas
 class DocumentaryScene(BaseModel):
@@ -43,18 +64,20 @@ class DocumentaryScene(BaseModel):
     narration: str
     chart_type: str  # 'price_ma', 'drawdown', 'normalized_comp'
 
+
 class BatchSummaryItem(BaseModel):
     ticker: str
     total_return: float
     max_drawdown: float
     video_path: Path
 
+
 # 2. Fetch Data & Generate Data-Driven Storyboard
 def build_storyboard(
-    ticker: str,
-    benchmark: str,
-    period: str,
-    df_bench_cached: pd.DataFrame
+        ticker: str,
+        benchmark: str,
+        period: str,
+        df_bench_cached: pd.DataFrame
 ) -> tuple[pd.DataFrame, List[DocumentaryScene], float, float]:
     print(f"[*] Fetching {period} market data for {ticker}...")
     df_target = yf.Ticker(ticker).history(period=period)
@@ -121,14 +144,37 @@ def build_storyboard(
     ]
     return df, scenes, total_return, max_dd
 
+
+def save_ticker_narration_script(ticker: str, scenes: List[DocumentaryScene]):
+    """Saves a dedicated narration text file for each ticker in custom_voice/ (e.g., googl_narration.txt)."""
+    custom_dir = Path("custom_voice")
+    custom_dir.mkdir(exist_ok=True)
+
+    filename = f"{ticker.lower()}_narration.txt"
+    ticker_script_path = custom_dir / filename
+
+    lines = []
+    for scene in scenes:
+        lines.append(f"[{ticker}_scene_{scene.scene_id}]")
+        lines.append(scene.narration)
+        lines.append("")
+
+    script_content = "\n".join(lines)
+    ticker_script_path.write_text(script_content, encoding="utf-8")
+
+    print(f"\n--- 📝 Narration Script Saved: custom_voice/{filename} ---")
+    print(script_content.strip())
+    print("-" * 60)
+
+
 # 3. Create Animated VideoClip Locked to Voiceover Duration
 def create_animated_scene_clip(
-    df: pd.DataFrame,
-    scene: DocumentaryScene,
-    ticker: str,
-    benchmark: str,
-    clip_duration: float,
-    draw_duration: float
+        df: pd.DataFrame,
+        scene: DocumentaryScene,
+        ticker: str,
+        benchmark: str,
+        clip_duration: float,
+        draw_duration: float
 ) -> tuple[VideoClip, plt.Figure]:
     plt.style.use("dark_background")
     fig, ax = plt.subplots(figsize=(16, 9), dpi=100)
@@ -202,11 +248,11 @@ def create_animated_scene_clip(
 
     return VideoClip(make_frame, duration=clip_duration), fig
 
+
 # 4. Multi-Mode Voiceover Engine (AI TTS / Pre-Recorded Files / Live Mac Mic)
 def record_live_mac_mic(prompt_text: str, voice_key: str, dest_path: Path, custom_dir: Path) -> bool:
     saved_custom_mp3 = custom_dir / f"{voice_key}.mp3"
 
-    # If a recording already exists from an earlier take, offer to reuse it
     if saved_custom_mp3.exists() and saved_custom_mp3.stat().st_size > 1000:
         reuse = input(
             f"    [?] Found existing recording '{saved_custom_mp3.name}'. Reuse it? [Y/n] (default Y): "
@@ -237,7 +283,6 @@ def record_live_mac_mic(prompt_text: str, voice_key: str, dest_path: Path, custo
         stderr=subprocess.DEVNULL
     )
 
-    # Wait for user to press Enter, then send clean interrupt signal to FFmpeg
     input()
     proc.send_signal(signal.SIGINT)
     try:
@@ -253,55 +298,49 @@ def record_live_mac_mic(prompt_text: str, voice_key: str, dest_path: Path, custo
     print("    [!] Microphone capture failed or was empty; falling back to AI TTS.\n")
     return False
 
+
 async def synthesize_voiceover(
-    text: str,
-    output_audio_path: Path,
-    voice_key: str = "",
-    voice_mode: str = "1",
-    voice: str = "en-US-ChristopherNeural"
+        text: str,
+        output_audio_path: Path,
+        voice_key: str = "",
+        voice_mode: str = "1",
+        voice: str = "en-US-ChristopherNeural"
 ):
-    custom_dir = Path("../AIExamples/custom_voice")
+    custom_dir = Path("custom_voice")
     custom_dir.mkdir(exist_ok=True)
 
-    # Always log the exact narration text so you have a script reference
     script_log = custom_dir / "narration_scripts_to_read.txt"
     with open(script_log, "a", encoding="utf-8") as f:
         f.write(f"[{voice_key or output_audio_path.stem}]\n{text}\n\n")
 
-        # Mode 2: Check custom_voice/ for pre-recorded files (case-insensitive & supports uppercase)
     if voice_mode == "2" and voice_key:
-        possible_names = [
-            f"{voice_key}.m4a", f"{voice_key}.mp3", f"{voice_key}.wav",
-            f"{voice_key.upper()}.m4a", f"{voice_key.upper()}.mp3", f"{voice_key.upper()}.wav",
-            f"{voice_key.replace('_scene_', '_SCENE_')}.m4a",
-            f"{voice_key.replace('_scene_', '_SCENE_')}.mp3",
-        ]
-        for name in possible_names:
-            candidate = custom_dir / name
+        for ext in (".m4a", ".mp3", ".wav"):
+            candidate = custom_dir / f"{voice_key}{ext}"
             if candidate.exists():
                 print(f"    🎙️ Using pre-recorded custom audio: {candidate.name}")
                 shutil.copy(candidate, output_audio_path)
                 return
-        print(f"    [*] No custom file found for '{voice_key}' in custom_voice/; using AI TTS fallback.")    # Mode 3: Record live from Mac microphone in terminal
+        print(f"    [*] No custom file found for '{voice_key}' in custom_voice/; using AI TTS fallback.")
+
     elif voice_mode == "3" and voice_key:
         recorded_ok = record_live_mac_mic(text, voice_key, output_audio_path, custom_dir)
         if recorded_ok:
             return
 
-    # Mode 1 (or fallback): Synthesize neural TTS via edge-tts
     communicate = edge_tts.Communicate(text, voice, rate="+0%")
     await communicate.save(str(output_audio_path))
 
+
 # 5. Single-Ticker Video Builder
 async def build_documentary(
-    ticker: str,
-    benchmark: str,
-    period: str,
-    df_bench_cached: pd.DataFrame,
-    output_dir: Path,
-    voice_mode: str = "1"
+        ticker: str,
+        benchmark: str,
+        period: str,
+        df_bench_cached: pd.DataFrame,
+        output_dir: Path,
+        voice_mode: str = "1"
 ) -> Optional[BatchSummaryItem]:
-    work_dir = Path("../AIExamples/build_assets") / ticker
+    work_dir = Path("build_assets") / ticker
     work_dir.mkdir(parents=True, exist_ok=True)
 
     df, scenes, total_return, max_dd = build_storyboard(
@@ -310,6 +349,10 @@ async def build_documentary(
         period=period,
         df_bench_cached=df_bench_cached
     )
+
+    # Automatically generate and save {ticker}_narration.txt
+    save_ticker_narration_script(ticker, scenes)
+
     video_clips = []
     audio_clips = []
     figures_to_close = []
@@ -317,7 +360,6 @@ async def build_documentary(
     try:
         for scene in scenes:
             print(f"    -> Preparing Scene {scene.scene_id}: {scene.title}")
-            # MoviePy / FFmpeg handles .mp3 or .m4a transparently
             audio_path = work_dir / f"scene_{scene.scene_id}.mp3"
             voice_key = f"{ticker}_scene_{scene.scene_id}"
 
@@ -372,14 +414,15 @@ async def build_documentary(
         for fig in figures_to_close:
             plt.close(fig)
 
+
 # 6. Opening Leaderboard Scene Generator
 async def build_leaderboard_intro(
-    items: List[BatchSummaryItem],
-    benchmark: str,
-    bench_return: float,
-    period: str,
-    output_dir: Path,
-    voice_mode: str = "1"
+        items: List[BatchSummaryItem],
+        benchmark: str,
+        bench_return: float,
+        period: str,
+        output_dir: Path,
+        voice_mode: str = "1"
 ) -> Optional[Path]:
     if not items:
         return None
@@ -388,7 +431,7 @@ async def build_leaderboard_intro(
     print("🏆 Generating Opening Leaderboard Scene...")
     print("==========================================")
 
-    work_dir = Path("../AIExamples/build_assets") / "leaderboard"
+    work_dir = Path("build_assets") / "leaderboard"
     work_dir.mkdir(parents=True, exist_ok=True)
 
     sorted_desc = sorted(items, key=lambda x: x.total_return, reverse=True)
@@ -504,6 +547,7 @@ async def build_leaderboard_intro(
         audio_clip.close()
         plt.close(fig)
 
+
 # 7. Lossless Master Video Stitcher
 def stitch_master_video(video_paths: List[Path], output_dir: Path, period: str) -> Optional[Path]:
     if len(video_paths) < 2:
@@ -555,6 +599,7 @@ def stitch_master_video(video_paths: List[Path], output_dir: Path, period: str) 
         for c in loaded_clips:
             c.close()
 
+
 # 8. Helper to Load & Normalize Batch Tickers
 def parse_batch_tickers(raw_input: str) -> List[str]:
     raw_input = raw_input.strip()
@@ -581,19 +626,19 @@ def parse_batch_tickers(raw_input: str) -> List[str]:
 
     return cleaned_tickers
 
+
 # 9. Master Batch Orchestrator
 async def run_batch_pipeline(
-    tickers: List[str],
-    benchmark: str,
-    period: str,
-    combine_master: bool = True,
-    voice_mode: str = "1"
+        tickers: List[str],
+        benchmark: str,
+        period: str,
+        combine_master: bool = True,
+        voice_mode: str = "1"
 ):
     output_dir = Path("completed_videos")
     output_dir.mkdir(exist_ok=True)
 
-    # Reset narration script log at start of batch
-    script_log = Path("../AIExamples/custom_voice") / "narration_scripts_to_read.txt"
+    script_log = Path("custom_voice") / "narration_scripts_to_read.txt"
     if script_log.exists():
         script_log.unlink()
 
@@ -652,11 +697,12 @@ async def run_batch_pipeline(
     print("\n==========================================")
     print(f"✅ BATCH COMPLETE: {len(summary_items)}/{total} individual videos generated")
     print(f"📂 Output Folder: {output_dir.resolve()}")
-    print(f"📝 Full Narration Script Log: {(Path('../AIExamples/custom_voice') / 'narration_scripts_to_read.txt').resolve()}")
+    print(f"📝 Full Narration Script Log: {(Path('custom_voice') / 'narration_scripts_to_read.txt').resolve()}")
     if summary_items:
         print("\n📊 Leaderboard Ranking:")
         for rank, item in enumerate(sorted(summary_items, key=lambda x: x.total_return, reverse=True), start=1):
-            print(f"   #{rank} {item.ticker:<6} | Return: {item.total_return:+6.1f}% | Max DD: {item.max_drawdown:6.1f}% | {item.video_path.name}")
+            print(
+                f"   #{rank} {item.ticker:<6} | Return: {item.total_return:+6.1f}% | Max DD: {item.max_drawdown:6.1f}% | {item.video_path.name}")
     if master_video_path:
         print(f"\n🏆 Master Portfolio Video: {master_video_path.name}")
     if failed:
@@ -665,7 +711,10 @@ async def run_batch_pipeline(
             print(f"   - {sym}: {err}")
     print("==========================================")
 
+
 if __name__ == "__main__":
+    verify_ffmpeg()
+
     raw_tickers = input(
         "Enter tickers separated by commas (e.g., AAPL, NVDA, TSLA) "
         "or press Enter for stocklist.txt / default batch: "
