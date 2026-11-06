@@ -15,6 +15,8 @@ from moviepy import VideoClip, AudioFileClip, VideoFileClip, concatenate_videocl
 import  shutil
 import sys
 
+
+
 # Map yfinance period codes to natural spoken narration phrases
 PERIOD_LABELS = {
     "1mo": "Over the past month",
