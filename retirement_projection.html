@@ -1,0 +1,610 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Retirement Projection: John Doe</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 40px; background-color: lightblue; color: #333; max-width: 1200px; margin-left: auto; margin-right: auto; }
+            .header-container { text-align: center; margin-bottom: 30px; }
+            h1 { color: #111827; margin-bottom: 5px; }
+            h2 { color: #4b5563; margin-top: 0; font-weight: normal; font-size: 1.2em; }
+            .success-badge { display: inline-block; background-color: #10b981; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 1.1em; margin-top: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+            .chart-container { width: 100%; height: 400px; margin-bottom: 40px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); box-sizing: border-box; }
+            table { width: 100%; border-collapse: collapse; background-color: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; font-size: 0.95em; margin-bottom: 30px; }
+            th, td { padding: 10px 12px; text-align: right; border-bottom: 1px solid #e5e7eb; }
+            th { background-color: #2563eb; color: #ffffff; font-weight: 600; font-size: 0.9em; }
+            tr:hover { background-color: #f3f4f6; }
+            .shock-row { background-color: #fee2e2 !important; }
+            .summary { margin-top: 20px; padding: 15px; background-color: #dbeafe; border-left: 5px solid #2563eb; font-size: 1.1em; border-radius: 4px; line-height: 1.5; }
+            .depleted { color: #dc2626; font-weight: bold; background-color: #fee2e2; border-left: 5px solid #dc2626; }
+            .recommendations { margin-top: 30px; margin-bottom: 40px; padding: 25px; background-color: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-radius: 8px; }
+            .recommendations h3 { color: #111827; margin-top: 0; font-size: 1.2em; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; }
+            .recommendations ul { line-height: 1.7; color: #374151; padding-left: 20px; }
+        </style>
+    </head>
+    <body>
+        <div class="header-container">
+            <h1>Retirement Projection: John Doe</h1>
+            <h2>Monte Carlo Analysis: 1,000 Simulated Markets</h2>
+            <div class="success-badge">
+                In 100.0% of simulated markets, your money lasted 20 years.
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="savingsChart"></canvas>
+        </div>
+
+        <h3 style="color: #111827;">Detailed Breakdown: 50th Percentile (Median) Market Scenario</h3>
+        <table>
+            <tr>
+                <th>Year</th>
+                <th>Age</th>
+                <th>Market Return</th>
+                <th>RMD Taken</th>
+                <th>Health Shock</th>
+                <th>Invested Savings</th>
+                <th>Checking Account</th>
+                <th>Total Net Worth</th>
+            </tr>
+    
+            <tr >
+                <td style="text-align: center;">1</td>
+                <td style="text-align: center; font-weight: bold;">60</td>
+                <td style="color: #10b981; font-weight: bold;">22.66%</td>
+                <td style="color: #333;">N/A</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$595,308.16</td>
+                <td>$30,000.00</td>
+                <td style="font-weight: bold;">$625,308.16</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">2</td>
+                <td style="text-align: center; font-weight: bold;">61</td>
+                <td style="color: #10b981; font-weight: bold;">5.19%</td>
+                <td style="color: #333;">N/A</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$607,675.17</td>
+                <td>$60,900.00</td>
+                <td style="font-weight: bold;">$668,575.17</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">3</td>
+                <td style="text-align: center; font-weight: bold;">62</td>
+                <td style="color: #10b981; font-weight: bold;">34.34%</td>
+                <td style="color: #333;">N/A</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$797,244.01</td>
+                <td>$92,727.00</td>
+                <td style="font-weight: bold;">$889,971.01</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">4</td>
+                <td style="text-align: center; font-weight: bold;">63</td>
+                <td style="color: #dc2626; font-weight: bold;">-9.56%</td>
+                <td style="color: #333;">N/A</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$701,351.23</td>
+                <td>$125,508.81</td>
+                <td style="font-weight: bold;">$826,860.04</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">5</td>
+                <td style="text-align: center; font-weight: bold;">64</td>
+                <td style="color: #10b981; font-weight: bold;">1.27%</td>
+                <td style="color: #333;">N/A</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$690,005.70</td>
+                <td>$159,274.07</td>
+                <td style="font-weight: bold;">$849,279.78</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">6</td>
+                <td style="text-align: center; font-weight: bold;">65</td>
+                <td style="color: #10b981; font-weight: bold;">15.86%</td>
+                <td style="color: #333;">N/A</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$778,587.46</td>
+                <td>$194,052.30</td>
+                <td style="font-weight: bold;">$972,639.76</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">7</td>
+                <td style="text-align: center; font-weight: bold;">66</td>
+                <td style="color: #10b981; font-weight: bold;">0.66%</td>
+                <td style="color: #333;">N/A</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$762,211.78</td>
+                <td>$229,873.87</td>
+                <td style="font-weight: bold;">$992,085.64</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">8</td>
+                <td style="text-align: center; font-weight: bold;">67</td>
+                <td style="color: #10b981; font-weight: bold;">12.99%</td>
+                <td style="color: #333;">N/A</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$839,116.27</td>
+                <td>$266,770.08</td>
+                <td style="font-weight: bold;">$1,105,886.35</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">9</td>
+                <td style="text-align: center; font-weight: bold;">68</td>
+                <td style="color: #dc2626; font-weight: bold;">-16.27%</td>
+                <td style="color: #333;">N/A</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$679,793.00</td>
+                <td>$304,773.18</td>
+                <td style="font-weight: bold;">$984,566.18</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">10</td>
+                <td style="text-align: center; font-weight: bold;">69</td>
+                <td style="color: #10b981; font-weight: bold;">7.35%</td>
+                <td style="color: #333;">N/A</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$706,244.12</td>
+                <td>$343,916.38</td>
+                <td style="font-weight: bold;">$1,050,160.50</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">11</td>
+                <td style="text-align: center; font-weight: bold;">70</td>
+                <td style="color: #dc2626; font-weight: bold;">-1.66%</td>
+                <td style="color: #333;">N/A</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$670,301.81</td>
+                <td>$384,233.87</td>
+                <td style="font-weight: bold;">$1,054,535.68</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">12</td>
+                <td style="text-align: center; font-weight: bold;">71</td>
+                <td style="color: #dc2626; font-weight: bold;">-16.77%</td>
+                <td style="color: #333;">N/A</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$532,960.27</td>
+                <td>$425,760.89</td>
+                <td style="font-weight: bold;">$958,721.16</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">13</td>
+                <td style="text-align: center; font-weight: bold;">72</td>
+                <td style="color: #10b981; font-weight: bold;">5.68%</td>
+                <td style="color: #333;">N/A</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$537,558.11</td>
+                <td>$468,533.71</td>
+                <td style="font-weight: bold;">$1,006,091.82</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">14</td>
+                <td style="text-align: center; font-weight: bold;">73</td>
+                <td style="color: #10b981; font-weight: bold;">16.02%</td>
+                <td style="color: #333;">N/A</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$597,255.15</td>
+                <td>$512,589.72</td>
+                <td style="font-weight: bold;">$1,109,844.88</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">15</td>
+                <td style="text-align: center; font-weight: bold;">74</td>
+                <td style="color: #10b981; font-weight: bold;">11.31%</td>
+                <td style="color: #333;">N/A</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$637,574.63</td>
+                <td>$557,967.42</td>
+                <td style="font-weight: bold;">$1,195,542.05</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">16</td>
+                <td style="text-align: center; font-weight: bold;">75</td>
+                <td style="color: #dc2626; font-weight: bold;">-4.64%</td>
+                <td style="color: #d97706;">$25,917.67</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$579,956.09</td>
+                <td>$604,706.44</td>
+                <td style="font-weight: bold;">$1,184,662.53</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">17</td>
+                <td style="text-align: center; font-weight: bold;">76</td>
+                <td style="color: #10b981; font-weight: bold;">23.56%</td>
+                <td style="color: #d97706;">$24,470.72</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$687,732.69</td>
+                <td>$652,847.63</td>
+                <td style="font-weight: bold;">$1,340,580.32</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">18</td>
+                <td style="text-align: center; font-weight: bold;">77</td>
+                <td style="color: #10b981; font-weight: bold;">14.85%</td>
+                <td style="color: #d97706;">$30,032.00</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$759,835.13</td>
+                <td>$702,713.80</td>
+                <td style="font-weight: bold;">$1,462,548.93</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">19</td>
+                <td style="text-align: center; font-weight: bold;">78</td>
+                <td style="color: #dc2626; font-weight: bold;">-5.62%</td>
+                <td style="color: #d97706;">$34,537.96</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$682,595.24</td>
+                <td>$757,680.96</td>
+                <td style="font-weight: bold;">$1,440,276.20</td>
+            </tr>
+        
+            <tr >
+                <td style="text-align: center;">20</td>
+                <td style="text-align: center; font-weight: bold;">79</td>
+                <td style="color: #10b981; font-weight: bold;">13.71%</td>
+                <td style="color: #d97706;">$32,350.49</td>
+                <td style="color: #333;">$0.00</td>
+                <td>$743,839.79</td>
+                <td>$811,073.51</td>
+                <td style="font-weight: bold;">$1,554,913.30</td>
+            </tr>
+        </table>
+        <div class="summary">
+            <strong>Monte Carlo Conclusion:</strong> Based on 1,000 randomized market simulations, your portfolio has a <strong>100.0% probability of success</strong>.<br>
+            The table and chart above display the median trajectory (the 50th percentile run). In this specific scenario, your final net worth at the end of 20 years is <strong>$1,554,913.30</strong>.
+        </div>
+        
+        <div class="recommendations">
+            <h3>Risk, Volatility & Stress Testing Analysis</h3>
+            <ul>
+                <li><strong>Volatility & Market Movement:</strong> Your portfolio has an assumed standard deviation (volatility) of <strong>15.0%</strong> around a mean expected return of <strong>7.0%</strong>. Statistically, this means that in roughly two-thirds of years, your returns are expected to swing anywhere between -8.0% and 22.0%. Mentally prepare for these normal fluctuations—they are the "cost of admission" for long-term growth.</li>
+                <li><strong>Stress Testing & Worst-Case Scenario:</strong> We tracked the <em>Maximum Drawdown</em> (the largest percentage drop from a portfolio high-water mark to a trough) across all 1,000 simulations. The absolute worst-case scenario modeled a peak-to-trough decline of <strong>51.7%</strong>. Acknowledging this severe stress-test limit helps you mentally brace for severe bear markets so you can stay the course without panic-selling.</li>
+            </ul>
+        </div>
+
+        <div class="recommendations">
+            <h3>Asset Allocation & Portfolio Strategy</h3>
+            <ul>
+                <li><strong>Risk Adjustments (Dialing Volatility Up or Down):</strong> If you wish to pursue <em>Aggressive Growth</em>, consider shifting capital toward small-cap equities, emerging markets, or growth-oriented technology sectors—this increases your portfolio's beta and expected return, but significantly widens the potential drawdown. Conversely, for <em>Capital Preservation</em>, increase allocations to short-duration fixed income, dividend-paying blue-chip stocks, and cash equivalents to lower overall volatility and protect your principal during market corrections.</li>
+                <li><strong>Fixed Income & Yield Strategy:</strong> In the current interest rate environment, consider building a "bond ladder" utilizing short-to-intermediate term U.S. Treasuries (e.g., 1- to 5-year durations). This captures attractive risk-free yields while minimizing duration risk (sensitivity to unexpected rate hikes). High-quality investment-grade corporate bonds or tax-exempt municipal bonds (if you fall into a higher tax bracket) can also provide a reliable income floor to buffer against equity market shocks.</li>
+            </ul>
+        </div>
+
+        <div class="recommendations">
+            <h3>Strategic Next Steps & Recommendations</h3>
+            <ul>
+                <li><strong>Tax Optimization & Gain Harvesting:</strong> Because your Social Security income covers your baseline expenses, your recognized taxable income is remarkably low. Consider strategically harvesting capital gains in your brokerage account to lock in the 0% federal tax bracket.</li>
+                <li><strong>Estate Planning & Asset Titling:</strong> Ensure your assets—particularly any real estate properties or high-value vehicles—are formally titled within a Revocable Living Trust to avoid lengthy and expensive California probate courts. Verify that all your investment accounts have primary and contingent beneficiaries named.</li>
+                <li><strong>Healthcare & Travel Coverage:</strong> We have modeled a potential long-term care shock in your 80s. Continue reviewing your Medicare and supplemental coverage annually during open enrollment to ensure it meets your evolving medical needs and provides adequate emergency coverage for any extended international travel.</li>
+            </ul>
+        </div>
+    
+        <div class="recommendations">
+            <h3>Monthly Affordability & Year-End Federal Tax Breakdown</h3>
+            <ul>
+                <li><strong>How Much You Can Afford Each Month (Year 1):</strong> Your gross monthly cash inflow is <strong>$5,000.00</strong> ($3,500.00 Social Security + $1,500.00 withdrawal). After setting aside <strong>$85.00/month</strong> for estimated Single-filer federal taxes, your <strong>Total Net Spendable Budget is $4,915.00/month</strong>. Because your baseline living expenses are <strong>$2,500.00/month</strong>, you have an extra <strong>$2,415.00/month</strong> of discretionary cushion.</li>
+                <li><strong>Annual Year-End Federal Taxes:</strong> Assuming withdrawals come from a traditional pre-tax retirement account (IRA/401k), IRS "provisional income" rules cause a portion of your Social Security benefits to become taxable. In Year 1, a <strong>Single filer (65+)</strong> faces an estimated year-end Federal tax liability of <strong>$1,020.00</strong> (on $10,200.00 of taxable income). A <strong>Married Filing Jointly</strong> couple owes <strong>$0.00</strong> in Year 1 due to the higher standard deduction. Note that once Required Minimum Distributions (RMDs) kick in at age 75, your forced withdrawals and annual year-end tax bill will increase accordingly.</li>
+            </ul>
+
+            <h4 style="color: #111827; margin-top: 25px; margin-bottom: 10px;">Year-by-Year Monthly Affordability & Estimated Federal Tax Schedule (Median Scenario)</h4>
+            <table>
+                <tr>
+                    <th>Year</th>
+                    <th>Age</th>
+                    <th>Gross Monthly Income</th>
+                    <th>Net Monthly Affordable (After Tax)</th>
+                    <th>Planned Monthly Expenses</th>
+                    <th>Monthly Surplus Cushion</th>
+                    <th>Year-End Fed Tax (Single)</th>
+                    <th>Year-End Fed Tax (Married)</th>
+                </tr>
+    
+                <tr>
+                    <td style="text-align: center;">1</td>
+                    <td style="text-align: center; font-weight: bold;">60</td>
+                    <td>$5,000.00</td>
+                    <td style="font-weight: bold; color: #2563eb;">$4,915.00</td>
+                    <td>$2,500.00</td>
+                    <td style="color: #10b981; font-weight: bold;">+$2,415.00</td>
+                    <td style="color: #dc2626; font-weight: bold;">$1,020.00</td>
+                    <td style="color: #4b5563;">$0.00</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">2</td>
+                    <td style="text-align: center; font-weight: bold;">61</td>
+                    <td>$5,150.00</td>
+                    <td style="font-weight: bold; color: #2563eb;">$5,056.35</td>
+                    <td>$2,575.00</td>
+                    <td style="color: #10b981; font-weight: bold;">+$2,481.35</td>
+                    <td style="color: #dc2626; font-weight: bold;">$1,123.80</td>
+                    <td style="color: #4b5563;">$0.00</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">3</td>
+                    <td style="text-align: center; font-weight: bold;">62</td>
+                    <td>$5,304.50</td>
+                    <td style="font-weight: bold; color: #2563eb;">$5,201.94</td>
+                    <td>$2,652.25</td>
+                    <td style="color: #10b981; font-weight: bold;">+$2,549.69</td>
+                    <td style="color: #dc2626; font-weight: bold;">$1,230.73</td>
+                    <td style="color: #4b5563;">$0.00</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">4</td>
+                    <td style="text-align: center; font-weight: bold;">63</td>
+                    <td>$5,463.63</td>
+                    <td style="font-weight: bold; color: #2563eb;">$5,350.68</td>
+                    <td>$2,731.82</td>
+                    <td style="color: #10b981; font-weight: bold;">+$2,618.86</td>
+                    <td style="color: #dc2626; font-weight: bold;">$1,355.49</td>
+                    <td style="color: #4b5563;">$0.00</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">5</td>
+                    <td style="text-align: center; font-weight: bold;">64</td>
+                    <td>$5,627.54</td>
+                    <td style="font-weight: bold; color: #2563eb;">$5,503.88</td>
+                    <td>$2,813.77</td>
+                    <td style="color: #10b981; font-weight: bold;">+$2,690.11</td>
+                    <td style="color: #dc2626; font-weight: bold;">$1,483.99</td>
+                    <td style="color: #4b5563;">$0.00</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">6</td>
+                    <td style="text-align: center; font-weight: bold;">65</td>
+                    <td>$5,796.37</td>
+                    <td style="font-weight: bold; color: #2563eb;">$5,661.67</td>
+                    <td>$2,898.19</td>
+                    <td style="color: #10b981; font-weight: bold;">+$2,763.49</td>
+                    <td style="color: #dc2626; font-weight: bold;">$1,616.35</td>
+                    <td style="color: #4b5563;">$0.00</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">7</td>
+                    <td style="text-align: center; font-weight: bold;">66</td>
+                    <td>$5,970.26</td>
+                    <td style="font-weight: bold; color: #2563eb;">$5,824.20</td>
+                    <td>$2,985.13</td>
+                    <td style="color: #10b981; font-weight: bold;">+$2,839.07</td>
+                    <td style="color: #dc2626; font-weight: bold;">$1,752.69</td>
+                    <td style="color: #4b5563;">$0.00</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">8</td>
+                    <td style="text-align: center; font-weight: bold;">67</td>
+                    <td>$6,149.37</td>
+                    <td style="font-weight: bold; color: #2563eb;">$5,991.61</td>
+                    <td>$3,074.68</td>
+                    <td style="color: #10b981; font-weight: bold;">+$2,916.93</td>
+                    <td style="color: #dc2626; font-weight: bold;">$1,893.11</td>
+                    <td style="color: #4b5563;">$0.00</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">9</td>
+                    <td style="text-align: center; font-weight: bold;">68</td>
+                    <td>$6,333.85</td>
+                    <td style="font-weight: bold; color: #2563eb;">$6,164.04</td>
+                    <td>$3,166.93</td>
+                    <td style="color: #10b981; font-weight: bold;">+$2,997.11</td>
+                    <td style="color: #dc2626; font-weight: bold;">$2,037.74</td>
+                    <td style="color: #4b5563;">$0.00</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">10</td>
+                    <td style="text-align: center; font-weight: bold;">69</td>
+                    <td>$6,523.87</td>
+                    <td style="font-weight: bold; color: #2563eb;">$6,341.64</td>
+                    <td>$3,261.93</td>
+                    <td style="color: #10b981; font-weight: bold;">+$3,079.71</td>
+                    <td style="color: #dc2626; font-weight: bold;">$2,186.71</td>
+                    <td style="color: #4b5563;">$0.00</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">11</td>
+                    <td style="text-align: center; font-weight: bold;">70</td>
+                    <td>$6,719.58</td>
+                    <td style="font-weight: bold; color: #2563eb;">$6,524.57</td>
+                    <td>$3,359.79</td>
+                    <td style="color: #10b981; font-weight: bold;">+$3,164.78</td>
+                    <td style="color: #dc2626; font-weight: bold;">$2,340.15</td>
+                    <td style="color: #4b5563;">$0.00</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">12</td>
+                    <td style="text-align: center; font-weight: bold;">71</td>
+                    <td>$6,921.17</td>
+                    <td style="font-weight: bold; color: #2563eb;">$6,712.99</td>
+                    <td>$3,460.58</td>
+                    <td style="color: #10b981; font-weight: bold;">+$3,252.40</td>
+                    <td style="color: #dc2626; font-weight: bold;">$2,498.20</td>
+                    <td style="color: #4b5563;">$0.00</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">13</td>
+                    <td style="text-align: center; font-weight: bold;">72</td>
+                    <td>$7,128.80</td>
+                    <td style="font-weight: bold; color: #2563eb;">$6,907.06</td>
+                    <td>$3,564.40</td>
+                    <td style="color: #10b981; font-weight: bold;">+$3,342.65</td>
+                    <td style="color: #dc2626; font-weight: bold;">$2,660.98</td>
+                    <td style="color: #4b5563;">$0.00</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">14</td>
+                    <td style="text-align: center; font-weight: bold;">73</td>
+                    <td>$7,342.67</td>
+                    <td style="font-weight: bold; color: #2563eb;">$7,106.95</td>
+                    <td>$3,671.33</td>
+                    <td style="color: #10b981; font-weight: bold;">+$3,435.61</td>
+                    <td style="color: #dc2626; font-weight: bold;">$2,828.65</td>
+                    <td style="color: #4b5563;">$0.00</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">15</td>
+                    <td style="text-align: center; font-weight: bold;">74</td>
+                    <td>$7,562.95</td>
+                    <td style="font-weight: bold; color: #2563eb;">$7,312.84</td>
+                    <td>$3,781.47</td>
+                    <td style="color: #10b981; font-weight: bold;">+$3,531.36</td>
+                    <td style="color: #dc2626; font-weight: bold;">$3,001.35</td>
+                    <td style="color: #4b5563;">$0.00</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">16</td>
+                    <td style="text-align: center; font-weight: bold;">75</td>
+                    <td>$7,789.84</td>
+                    <td style="font-weight: bold; color: #2563eb;">$7,524.90</td>
+                    <td>$3,894.92</td>
+                    <td style="color: #10b981; font-weight: bold;">+$3,629.98</td>
+                    <td style="color: #dc2626; font-weight: bold;">$3,179.23</td>
+                    <td style="color: #4b5563;">$0.00</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">17</td>
+                    <td style="text-align: center; font-weight: bold;">76</td>
+                    <td>$8,023.53</td>
+                    <td style="font-weight: bold; color: #2563eb;">$7,743.33</td>
+                    <td>$4,011.77</td>
+                    <td style="color: #10b981; font-weight: bold;">+$3,731.56</td>
+                    <td style="color: #dc2626; font-weight: bold;">$3,362.45</td>
+                    <td style="color: #4b5563;">$0.00</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">18</td>
+                    <td style="text-align: center; font-weight: bold;">77</td>
+                    <td>$8,287.63</td>
+                    <td style="font-weight: bold; color: #2563eb;">$7,986.51</td>
+                    <td>$4,132.12</td>
+                    <td style="color: #10b981; font-weight: bold;">+$3,854.39</td>
+                    <td style="color: #dc2626; font-weight: bold;">$3,613.49</td>
+                    <td style="color: #4b5563;">$0.00</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">19</td>
+                    <td style="text-align: center; font-weight: bold;">78</td>
+                    <td>$8,836.68</td>
+                    <td style="font-weight: bold; color: #2563eb;">$8,452.51</td>
+                    <td>$4,256.08</td>
+                    <td style="color: #10b981; font-weight: bold;">+$4,196.43</td>
+                    <td style="color: #dc2626; font-weight: bold;">$4,610.04</td>
+                    <td style="color: #4b5563;">$653.31</td>
+                </tr>
+        
+                <tr>
+                    <td style="text-align: center;">20</td>
+                    <td style="text-align: center; font-weight: bold;">79</td>
+                    <td>$8,833.14</td>
+                    <td style="font-weight: bold; color: #2563eb;">$8,489.77</td>
+                    <td>$4,383.77</td>
+                    <td style="color: #10b981; font-weight: bold;">+$4,106.00</td>
+                    <td style="color: #dc2626; font-weight: bold;">$4,120.54</td>
+                    <td style="color: #4b5563;">$170.74</td>
+                </tr>
+        
+            </table>
+        </div>
+    
+        <script>
+            const ctx = document.getElementById('savingsChart').getContext('2d');
+            const savingsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["Year 1 (Age 60)", "Year 2 (Age 61)", "Year 3 (Age 62)", "Year 4 (Age 63)", "Year 5 (Age 64)", "Year 6 (Age 65)", "Year 7 (Age 66)", "Year 8 (Age 67)", "Year 9 (Age 68)", "Year 10 (Age 69)", "Year 11 (Age 70)", "Year 12 (Age 71)", "Year 13 (Age 72)", "Year 14 (Age 73)", "Year 15 (Age 74)", "Year 16 (Age 75)", "Year 17 (Age 76)", "Year 18 (Age 77)", "Year 19 (Age 78)", "Year 20 (Age 79)"],
+                    datasets: [
+                        {
+                            label: 'Total Net Worth',
+                            data: [625308.16, 668575.17, 889971.01, 826860.04, 849279.78, 972639.76, 992085.64, 1105886.35, 984566.18, 1050160.5, 1054535.68, 958721.16, 1006091.82, 1109844.88, 1195542.05, 1184662.53, 1340580.32, 1462548.93, 1440276.2, 1554913.3],
+                            borderColor: '#111827',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointRadius: 0,
+                            fill: false,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Invested Savings (Randomized Returns)',
+                            data: [595308.16, 607675.17, 797244.01, 701351.23, 690005.7, 778587.46, 762211.78, 839116.27, 679793.0, 706244.12, 670301.81, 532960.27, 537558.11, 597255.15, 637574.63, 579956.09, 687732.69, 759835.13, 682595.24, 743839.79],
+                            borderColor: '#2563eb',
+                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                            borderWidth: 3,
+                            pointRadius: 4,
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Cash Checking (0%)',
+                            data: [30000.0, 60900.0, 92727.0, 125508.81, 159274.07, 194052.3, 229873.87, 266770.08, 304773.18, 343916.38, 384233.87, 425760.89, 468533.71, 512589.72, 557967.42, 604706.44, 652847.63, 702713.8, 757680.96, 811073.51],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderWidth: 3,
+                            pointRadius: 4,
+                            fill: true,
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, ticks: { callback: function(value) { return '$' + value.toLocaleString(); } } }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) { label += ': '; }
+                                    if (context.parsed.y !== null) {
+                                        label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    </body>
+    </html>
+    
