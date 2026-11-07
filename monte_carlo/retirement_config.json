@@ -1,0 +1,16 @@
+{
+    "client_name": "Portfolio Stress-Test",
+    "start_age": 66,
+    "end_age": 95,
+    "initial_savings": 500000,
+    "monthly_ss": 3500,
+    "monthly_withdrawal": 1500,
+    "mean_return": 0.07,
+    "volatility": 0.15,
+    "num_simulations": 1000,
+    "rmd_start_age": 75,
+    "shock_year_index": 3,
+    "shock_return": -0.22,
+    "voice_anchor": "en-US-ChristopherNeural",
+    "voice_analyst_fallback": "en-US-EricNeural"
+}

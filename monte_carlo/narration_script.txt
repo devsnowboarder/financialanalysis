@@ -1,0 +1,12 @@
+=== SCENE1_INTRO (wire) ===
+Welcome to the Monte Carlo Retirement Runway and Tax Stress-Tester. We are modeling one thousand market trajectories from age 66 to 95, starting with 500,000 dollars in savings, 3,500 dollars per month in Social Security, and 1,500 dollars in monthly portfolio withdrawals. Across all one thousand simulations, the portfolio achieves a 81.4 percent survival rate at age 90.
+
+=== SCENE2_SHOCK (custom_or_fallback) ===
+Here is where sequence-of-returns risk changes the picture. Watch the crimson trajectory in Year 3 at age 69. A twenty-two percent market drop combined with a ten percent aftershock forces the portfolio to liquidate shares at the bottom. Instead of compounding along the median path to 394,392 dollars by age 90, the shocked runway compresses to 272,550 dollars—wiping out 121,841 dollars in late-life cushion.
+
+=== SCENE3_RMD_TAX (wire) ===
+On the right panel, look at the income and tax stack beginning at age 75. Under SECURE 2.0 rules, Required Minimum Distributions kick in using the IRS Uniform Lifetime Table. Even on the shocked trajectory, mandatory IRA withdrawals push provisional income past the 85 percent Social Security taxation threshold, creating a compounding Federal and California tax drag.
+
+=== SCENE4_STRATEGY (custom_or_fallback) ===
+The takeaway is clear: the golden window between age 66 and 74 is your prime tax-harvesting runway. By executing partial Roth conversions during low-tax years before age 75 RMDs begin, and holding a two-year cash buffer to avoid selling equities during a Year 3 crash, you protect both your tax bracket and your age 90 survival.
+

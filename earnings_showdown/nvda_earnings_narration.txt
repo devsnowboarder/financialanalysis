@@ -1,0 +1,18 @@
+==========================================================
+ EARNINGS WHISPER VS. REALITY NARRATION SCRIPT: NVDA
+==========================================================
+
+[SCENE1_WIRE_BEAT] - WIRE ANCHOR (edge_tts)
+"Breaking earnings wire for NVDA. Wall Street consensus looked for 0.85 dollars per share, and NVDA delivered 0.92 dollars—an 8.2 percent bottom-line beat, alongside 24.5 percent year-over-year revenue growth. By every textbook metric on the headline tape, this quarter was a clean beat."
+
+[SCENE2_SKEPTIC_REALITY] - SKEPTICAL ANALYST (Custom .m4a or Fallback)
+Drop custom recording at: custom_voice/nvda_skeptic_1.m4a
+"Hold on—if the headline numbers were so great, look at the crimson line after the bell. NVDA tanked 7.9 percent immediately following the release. Why? Because the options market priced in a 6.8 percent implied move, and the buy-side whisper number was miles above Wall Street consensus. When you are priced for perfection, merely beating a low-bar estimate triggers an instant institutional sell-the-news flush."
+
+[SCENE3_IMPLIED_VS_ACTUAL] - WIRE ANCHOR (edge_tts)
+"Looking at the right panel across the last four quarters, the options market implied an average move of 6.7 percent heading into each print. While NVDA beat earnings estimates four quarters in a row, Q4's -7.9 percent post-earnings drop breached the downside implied volatility band."
+
+[SCENE4_SKEPTIC_VERDICT] - SKEPTICAL ANALYST (Custom .m4a or Fallback)
+Drop custom recording at: custom_voice/nvda_skeptic_2.m4a
+"And here is the real takeaway for traders: forward gross margin guidance and capex commentary matter ten times more than backward-looking EPS. Until NVDA reclaims its Day Zero pre-earnings breakdown level, chasing the headline beat is a classic retail trap. Let the post-earnings volatility crush settle first."
+
